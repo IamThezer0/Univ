@@ -6,6 +6,6 @@ int main() {
 
     cout << "Vasea, Sosati";
     cout << "Atest";
-    cout<<"Arafaz cu butelie";
+    cout<<"Aragaz cu butelie";
     return 0;
 }
