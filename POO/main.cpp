@@ -9,3 +9,4 @@ int main() {
     cout<<"Arafaz cu buteliiiii";
     return 0;
 }
+
