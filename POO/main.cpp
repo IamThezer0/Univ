@@ -9,7 +9,6 @@ class lista;
 
 class prod_mag
 {
-
 private:
     int tip_obj,
         cod_produs;
