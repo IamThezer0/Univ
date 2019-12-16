@@ -76,7 +76,7 @@ public:
     prod_mag *prim;
     void adaugare(prod_mag *urm);
     void afisare_lista();
-    void introducere();
+    void introducere(lista &list);
 };
 
 void lista::adaugare(prod_mag *a)
@@ -120,7 +120,7 @@ void lista::afisare_lista()
             a = a->next;
         }
 }
-void lista::introducere()
+void introducere(lista &list)
 {
     prod_mag *ProdMag;
     string producator,
@@ -142,7 +142,6 @@ void lista::introducere()
         cin >> soft_inclus;
         sc = new scanner(tip, producator, cod_prod, soft_inclus);
         ProdMag = sc;
-        this->adaugare(ProdMag);
     }
     else
     {
@@ -151,8 +150,8 @@ void lista::introducere()
         cin >> format;
         imprim = new imprimanta(tip, producator, cod_prod, format);
         ProdMag = imprim;
-        this->adaugare(ProdMag);
     }
+    list.adaugare(ProdMag);
 }
 int main()
 {
@@ -169,7 +168,7 @@ int main()
         switch (opt)
         {
         case 1:
-            l.introducere();
+            introducere(l);
             break;
         case 2:
             l.afisare_lista();
