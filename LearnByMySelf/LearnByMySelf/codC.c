@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
-#define SIZE 7
+#include<stdlib.h>
 #define White 1
 #define Grey 2
 #define Black 3
