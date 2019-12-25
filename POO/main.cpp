@@ -6,6 +6,21 @@ using namespace std;
 
 class List;
 
+class Exception{
+    public:
+    string message;
+    int data;
+    Exception()
+    {
+        message = "";
+        data = 0;
+    }
+    Exception(string mesage, int data)
+    {
+        message = mesage;
+        data = data;
+    }
+};
 class Insurance{
     string firstName,
            lastName;
@@ -66,10 +81,21 @@ public:
     }
     friend class List;
 };
+class List{
+    public:
+        Insurance*head;
+        void addNode(Insurance*node);
+        void insertFile();
+        void changeName(string name);
+        void displayCategory();
+        void deleteName(string name);
+        void displayName(string name);
+        void saveFile(string period);
+};
 // Ma duc sa imi fac un ceai si sa ma pun la serial. :)
 // Daca ai chef sa te mai uiti peste astea sa vezi daca sunt ok.
 //P.S.: Ti pwp si Craciun Fericit. <3
-
+//receptionat :))
 
 
 int main(){
