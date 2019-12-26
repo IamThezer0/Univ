@@ -1,6 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <string>
+#include <ostream>
+#include <istream>
 
 using namespace std;
 
@@ -81,6 +83,33 @@ public:
     }
     friend class List;
 };
+class Overload
+{
+    string frs_Name,
+           lst_name;
+    int CeNePe, // plm daca e schimbi tu, nu am inspiratie acum.
+        periode, //same here.
+        tippp;
+public:
+    friend ostream &operator <<(ostream &out, Overload &ov);
+    friend istream &operator >>(istream &in, Overload &ov);
+
+    string returnfrsName(){
+        return frs_Name;
+    }
+    string returnlst_name(){
+        return lst_name;
+    }
+    int returnCNP(){
+        return CeNePe;
+    }
+    int returnPeriode(){
+        return periode;
+    }
+    int returnType(){
+        return tippp;
+    }
+};
 class List{
     public:
         Insurance*head;
@@ -96,6 +125,8 @@ class List{
 // Daca ai chef sa te mai uiti peste astea sa vezi daca sunt ok.
 //P.S.: Ti pwp si Craciun Fericit. <3
 //receptionat :))
+// Update, am facut overload-ul, ramane sa il verific din nou ca nu am fost foarte concentrat.
+// Coma alcoolica fericita <3
 
 
 int main(){
