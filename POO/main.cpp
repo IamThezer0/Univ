@@ -3,6 +3,7 @@
 #include <string>
 #include <ostream>
 #include <istream>
+#include <fstream>
 
 using namespace std;
 
@@ -25,13 +26,13 @@ class Exception{
 };
 class Insurance{
     string firstName,
-           lastName;
+           lastName,
+           period;
     int CNP,
-        period,
         type;
         Insurance *next;
 public:
-    Insurance( string f_name, string l_name, int cod, int per, int tip)
+    Insurance( string f_name, string l_name, int cod, string per, int tip)
     {
         firstName = f_name;
         lastName = l_name;
@@ -57,7 +58,7 @@ public:
 class travelInsurance : public Insurance{
     string destination;
 public:
-    travelInsurance(string f_name, string l_name, int cod, int per, int tip, string dest) : Insurance(f_name, l_name,cod,per,tip)
+    travelInsurance(string f_name, string l_name, int cod, string per, int tip, string dest) : Insurance(f_name, l_name,cod,per,tip)
     {
         destination = dest;
     }
@@ -74,7 +75,7 @@ class carInsurance : public Insurance
     string carType;
     string carModel;
 public:
-    carInsurance(string f_name, string l_name, int cod, int per, int tip, string car_t, string car_m) : Insurance( f_name, l_name, cod, per, tip)
+    carInsurance(string f_name, string l_name, int cod, string per, int tip, string car_t, string car_m) : Insurance( f_name, l_name, cod, per, tip)
     {
         carType = car_t;
         carModel = car_m;
@@ -90,29 +91,30 @@ public:
 class Overload
 {
     string frt_name,
-           lst_name;
-    int CeNePe, // plm daca e schimbi tu, nu am inspiratie acum.
-        periode, //same here.
-        tippp;
+           lst_name,
+           period;
+    int cnp, // plm daca e schimbi tu, nu am inspiratie acum.
+        tip;
 public:
     friend ostream &operator <<(ostream &out, Overload &ov);
     friend istream &operator >>(istream &in, Overload &ov);
-
-    string returnfrsName(){
+//am impresia ca astea nu trebuie neaparat
+//le comentez momentan sa vedem
+   /* string returnfrsName(){
         return frt_name;
     }
     string returnlst_name(){
         return lst_name;
     }
     int returnCNP(){
-        return CeNePe;
+        return cnp;
     }
-    int returnPeriode(){
-        return periode;
+    int returnPeriod(){
+        return period;
     }
     int returnType(){
-        return tippp;
-    }
+        return tip;
+    }*/
 };
 ostream &operator <<(ostream &out, Overload &ov)
 {
@@ -128,18 +130,18 @@ istream &operator >>(istream &in, Overload &ov)
     cout<<"\nGive the last name of the insured: "<<endl;
     cin>>ov.lst_name;
     cout<<"\nGive the CNP of the insured: "<<endl;
-    cin>>ov.CeNePe;
+    cin>>ov.cnp;
     cout<<"\nGive the period of the insurance: "<<endl;
-    cin>>ov.periode;
+    cin>>ov.period;
     cout<<"\nGive the type of insurance: "<<endl;
-    cin>>ov.tippp;
+    cin>>ov.tip;
     return in;
 }
 class List{
     public:
         Insurance*head;
         void addNode(Insurance*node);
-        void insertFile();
+        void insert();
         void changeName(string name, string nouName);
         void displayCategory();
         void deleteName(string name);
@@ -160,7 +162,7 @@ void List::addNode(Insurance *add)
         }
         else
         {  
-             while(obj->next && (obj->next)->lastName < add->firstName)
+             while(obj->next && (obj->next)->lastName < add->lastName)
                 obj = obj->next;
             add->next = obj-> next;
             obj->next = add;
@@ -171,22 +173,53 @@ void List::addNode(Insurance *add)
         head = add;
 }
 
-void List::changeName(string name, string nouName)
+void List::changeName(string name, string newName)
 {
     Insurance *obj;
     obj = head;
     while(obj)
     {
-        if(name == nouName)
-            obj->setName(nouName);
+        if(name == newName)
+            obj->setName(newName);
         obj=obj->next;
     }
+}
+void citireFisier(List &l){
+    ifstream file("file_path.txt");
+    string fileLine,
+            nume="Nume",
+            prenume="Prenume",
+            destinatie="Destinatie",
+            perioada="Perioada",
+            marcaAuto="Marca auto",
+            modelAuto="Model auto";
+    int cnp,tip;
+    travelInsurance *ti;
+    carInsurance *ci;
+    if(file.is_open()){
+        while(getline(file,fileLine)){
+            tip=stoi(fileLine,nullptr,10);
+            cout<<"\n"<<tip;
+            if(tip==0){
+                ti=new travelInsurance(nume,prenume,cnp,perioada,tip,destinatie);
+                l.addNode(ti);
+            }
+            else{
+                ci=new carInsurance(nume,prenume,cnp,perioada,tip,marcaAuto,modelAuto);
+                l.addNode(ci);
+            }
+        }
+        file.close();
+    }else
+        cout<<"\nFile cannot be opened!!";
+
 }
 
 //P.S.: Ti pwp si Craciun Fericit. <3
 //receptionat :))
 // Coma alcoolica fericita <3
-
+//ba ,dc plm scriem tot in engleza ? :D :D
+//am schimbat perioada din int in string, ex(2019-2020)
 
 int main(){
     
