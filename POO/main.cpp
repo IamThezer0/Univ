@@ -40,6 +40,10 @@ public:
         type = tip; 
         next = NULL;
     }
+    void setName(string newName)
+    {
+        firstName = newName;
+    }
     virtual void display()
     {
         cout<<"------------------------------------\n";
@@ -85,7 +89,7 @@ public:
 };
 class Overload
 {
-    string frs_Name,
+    string frt_name,
            lst_name;
     int CeNePe, // plm daca e schimbi tu, nu am inspiratie acum.
         periode, //same here.
@@ -95,7 +99,7 @@ public:
     friend istream &operator >>(istream &in, Overload &ov);
 
     string returnfrsName(){
-        return frs_Name;
+        return frt_name;
     }
     string returnlst_name(){
         return lst_name;
@@ -110,22 +114,77 @@ public:
         return tippp;
     }
 };
+ostream &operator <<(ostream &out, Overload &ov)
+{
+    cout<<"\n The insurance dates will be required soon: "<<endl;
+    cout<<endl;
+    return out;
+}
+
+istream &operator >>(istream &in, Overload &ov)
+{
+    cout<<"\nGive the first name of the insured: "<<endl;
+    cin>>ov.frt_name;
+    cout<<"\nGive the last name of the insured: "<<endl;
+    cin>>ov.lst_name;
+    cout<<"\nGive the CNP of the insured: "<<endl;
+    cin>>ov.CeNePe;
+    cout<<"\nGive the period of the insurance: "<<endl;
+    cin>>ov.periode;
+    cout<<"\nGive the type of insurance: "<<endl;
+    cin>>ov.tippp;
+    return in;
+}
 class List{
     public:
         Insurance*head;
         void addNode(Insurance*node);
         void insertFile();
-        void changeName(string name);
+        void changeName(string name, string nouName);
         void displayCategory();
         void deleteName(string name);
         void displayName(string name);
         void saveFile(string period);
 };
-// Ma duc sa imi fac un ceai si sa ma pun la serial. :)
-// Daca ai chef sa te mai uiti peste astea sa vezi daca sunt ok.
+
+void List::addNode(Insurance *add)
+{
+    Insurance *obj;
+    obj = head;
+    if(obj)
+    {
+        if(add->lastName < obj->lastName)
+        {
+            add->next = head;
+            head = add;
+        }
+        else
+        {  
+             while(obj->next && (obj->next)->lastName < add->firstName)
+                obj = obj->next;
+            add->next = obj-> next;
+            obj->next = add;
+        }
+        
+    }
+    else
+        head = add;
+}
+
+void List::changeName(string name, string nouName)
+{
+    Insurance *obj;
+    obj = head;
+    while(obj)
+    {
+        if(name == nouName)
+            obj->setName(nouName);
+        obj=obj->next;
+    }
+}
+
 //P.S.: Ti pwp si Craciun Fericit. <3
 //receptionat :))
-// Update, am facut overload-ul, ramane sa il verific din nou ca nu am fost foarte concentrat.
 // Coma alcoolica fericita <3
 
 
