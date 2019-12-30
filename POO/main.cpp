@@ -100,7 +100,7 @@ public:
     friend istream &operator >>(istream &in, Overload &ov);
 //am impresia ca astea nu trebuie neaparat
 //le comentez momentan sa vedem
-   /* string returnfrsName(){
+    string returnfrsName(){
         return frt_name;
     }
     string returnlst_name(){
@@ -109,12 +109,12 @@ public:
     int returnCNP(){
         return cnp;
     }
-    int returnPeriod(){
+    string returnPeriod(){
         return period;
     }
     int returnType(){
         return tip;
-    }*/
+    }
 };
 ostream &operator <<(ostream &out, Overload &ov)
 {
@@ -129,8 +129,18 @@ istream &operator >>(istream &in, Overload &ov)
     cin>>ov.frt_name;
     cout<<"\nGive the last name of the insured: "<<endl;
     cin>>ov.lst_name;
-    cout<<"\nGive the CNP of the insured: "<<endl;
-    cin>>ov.cnp;
+    try{
+        cout<<"\nGive the CNP of the insured: "<<endl;
+        cin>>ov.cnp;
+        if(ov.cnp<0)
+            throw Exception("valoarea este invalida!!",ov.cnp);
+    }
+    catch(Exception ex){
+        do{
+            cout<<"introduceti cnp valid: "<<endl;
+            cin>>ov.cnp;
+        }while(ov.cnp<0);
+    }
     cout<<"\nGive the period of the insurance: "<<endl;
     cin>>ov.period;
     cout<<"\nGive the type of insurance: "<<endl;
@@ -184,7 +194,7 @@ void List::changeName(string name, string newName)
         obj=obj->next;
     }
 }
-void citireFisier(List &l){
+void citireFisier(List &l){//citirea din fisier
     ifstream file("file_path.txt");
     string fileLine,
             nume="Nume",
@@ -213,6 +223,34 @@ void citireFisier(List &l){
     }else
         cout<<"\nFile cannot be opened!!";
 
+}
+void List::insert(){
+    string carType,
+            carModel,
+            destination;
+    Insurance *ins;
+    Overload stream;
+    cout<<stream;
+    cin>>stream;
+    if(stream.returnType()==0)//daca s-a ales travel insurance
+    {
+        travelInsurance*ti;
+        
+        cout<<"Destination: "<<endl;
+        cin>>destination;
+        ti=new travelInsurance(stream.returnfrsName(),stream.returnlst_name(),stream.returnCNP(),stream.returnPeriod(),stream.returnType(),destination);
+        ins=ti;
+        addNode(ti);
+    }else{
+        carInsurance*ci;
+        cout<<"The type of the car is: "<<endl;
+        cin>>carType;
+        cout<<"The model of the car is: "<<endl;
+        cin>>carModel;
+        ci=new carInsurance(stream.returnfrsName(),stream.returnlst_name(),stream.returnCNP(),stream.returnPeriod(),stream.returnType(),carType,carModel);
+        ins=ci;
+        addNode(ins);
+    }
 }
 
 //P.S.: Ti pwp si Craciun Fericit. <3
