@@ -41,6 +41,9 @@ public:
         type = tip; 
         next = NULL;
     }
+    int getType(){
+        return type;
+    }
     void setName(string newName)
     {
         firstName = newName;
@@ -52,6 +55,23 @@ public:
         cout<<"Last name is : "<<lastName<<endl;
         cout<<"The CNP of the client is: "<<CNP<<endl;
         cout<<"The period of insurance is: "<<period<<endl;
+        cout<<"Type: "<<getType()<<endl;
+    }
+    virtual void displayFile(){
+        ofstream file;
+        file.open("file/path");
+        if(file.is_open()){
+            file<<getType()<<" ";
+            file<<firstName<<" ";
+            file<<lastName<<" ";
+            file<<CNP<<" ";
+            file<<period<<" ";
+            file.close();
+        }else
+        {
+                cout<<"\nnu se poate deschide fisierul!";
+        }
+        
     }
     friend class List;
 };
@@ -250,6 +270,31 @@ void List::insert(){
         ci=new carInsurance(stream.returnfrsName(),stream.returnlst_name(),stream.returnCNP(),stream.returnPeriod(),stream.returnType(),carType,carModel);
         ins=ci;
         addNode(ins);
+    }
+}
+void List::displayCategory(){
+    Insurance*ins;
+    ins=head;
+    if(!ins)
+        cout<<"\nEmpty list!";
+    else{
+        cout<<"Car insurance: ";
+        while(ins){
+            if(ins->type==0){
+                ins->display();
+                ins->displayFile();
+            }
+            ins=ins->next;
+        }
+        ins=head;
+        cout<<"Travel insurance: ";
+        while(ins){
+            if(ins->type==1){
+                ins->display();
+                ins->displayFile();
+            }
+            ins=ins->next;
+        }
     }
 }
 
