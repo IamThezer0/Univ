@@ -174,7 +174,7 @@ class List{
         void insert();
         void changeName(string name, string nouName);
         void displayCategory();
-        void deleteName(string name);
+        void deleteName(string fName, string lName);
         void displayName(string name);
         void saveFile(string period);
 };
@@ -297,13 +297,35 @@ void List::displayCategory(){
         }
     }
 }
-
-//P.S.: Ti pwp si Craciun Fericit. <3
-//receptionat :))
-// Coma alcoolica fericita <3
-//ba ,dc plm scriem tot in engleza ? :D :D
-//am schimbat perioada din int in string, ex(2019-2020)
-
+void List::deleteName(string fName, string lName){
+    Insurance *x, *y; // nu am inspiratie man, schimbam dupa
+    x=y=head;
+    if(x)
+    {
+        while(x && x->firstName !=fName && x->lastName !=lName){
+            y = x;
+            x = x->next;
+        }
+        if(x)
+        {
+            if(x != y)
+            {
+                y->next = x->next;
+                delete x;
+            }
+            else
+            {
+                head = x->next;
+                delete x;
+            }
+            
+        }
+        else
+            cout<<" Numele nu exista! "<<endl;
+    }
+    else
+        cout<<" Lista este vida! "<<endl;
+}
 int main(){
     
  }
