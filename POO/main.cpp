@@ -73,6 +73,12 @@ public:
         }
         
     }
+    virtual void fileWrite(){
+        ofstream file;
+        file.open("newFile.txt",ios::out | ios::app);
+        file<<getType()<<" "<<firstName<<" "<<lastName<<" "<<CNP<<" "<<period<<" ";
+        file.close();
+    }
     friend class List;
 };
 class travelInsurance : public Insurance{
@@ -86,6 +92,13 @@ public:
     {
         Insurance::display();
         cout<<"The destination of travel is: "<<destination<<endl; 
+    }
+    void fileWrite(){
+        Insurance::fileWrite();
+        ofstream file;
+        file.open("newFile.txt",ios::out | ios::app);
+        file<<destination<<" ";
+        file.close();
     }
     friend class List;
 };
@@ -105,6 +118,13 @@ public:
         Insurance::display();
         cout<<"The type of the car is: "<<carType <<endl;
         cout<<"The model of the car is: "<<carModel<<endl;
+    }
+    void fileWrite(){
+        Insurance::fileWrite();
+        ofstream file;
+        file.open("newFile.txt",ios::out | ios::app);
+        file<<carType<<" "<<carModel<<" "<<endl;
+        file.close();
     }
     friend class List;
 };
@@ -244,7 +264,7 @@ void citireFisier(List &l){//citirea din fisier
         cout<<"\nFile cannot be opened!!";
 
 }
-void List::insert(){
+void insert(List &l,int x){
     string carType,
             carModel,
             destination;
@@ -252,7 +272,7 @@ void List::insert(){
     Overload stream;
     cout<<stream;
     cin>>stream;
-    if(stream.returnType()==0)//daca s-a ales travel insurance
+    if(x==0)//daca s-a ales travel insurance
     {
         travelInsurance*ti;
         
@@ -260,8 +280,8 @@ void List::insert(){
         cin>>destination;
         ti=new travelInsurance(stream.returnfrsName(),stream.returnlst_name(),stream.returnCNP(),stream.returnPeriod(),stream.returnType(),destination);
         ins=ti;
-        addNode(ti);
-    }else{
+        l.addNode(ti);
+    }else if(x==1){
         carInsurance*ci;
         cout<<"The type of the car is: "<<endl;
         cin>>carType;
@@ -269,7 +289,7 @@ void List::insert(){
         cin>>carModel;
         ci=new carInsurance(stream.returnfrsName(),stream.returnlst_name(),stream.returnCNP(),stream.returnPeriod(),stream.returnType(),carType,carModel);
         ins=ci;
-        addNode(ins);
+        l.addNode(ins);
     }
 }
 void List::displayCategory(){
@@ -326,6 +346,74 @@ void List::deleteName(string fName, string lName){
     else
         cout<<" Lista este vida! "<<endl;
 }
+void List::saveFile(string period){//salvarea dupa perioada
+    Insurance*ins;
+    ins=head;
+    if(!ins)
+        cout <<"\nEmpty List!";
+    else while(ins){
+        if(ins->period==period)
+            ins->fileWrite();
+        ins=ins->next;
+
+    }
+}
 int main(){
-    
+    int opt;
+    List l;
+    l.head=NULL;
+    while(1){
+        cout << "\n\n[1]Incarcare informații dintr-un fisier.\n";
+		cout << "[2]Adaugarea unei asigurari noi\n";
+		cout << "[3]Afisare asigurarilor pe categorie si salvarea in fisier.\n";
+		cout << "[4]Stergere dupa nume si prenume.\n";
+		cout << "[5]Modificarea numelui antrenorului.\n";
+        cout << "xxxxx--[6]Sortarea listei dupa nume.\n";
+		cout << "[7]Salvarea într-un fisier a asigurarilor dupa perioada citia de la tastatura\n";
+		cout << "[8]Iesire.\n";
+		cout << "Dati optiunea dvs: ";
+		cin >> opt;
+        switch(opt){
+            case 8:return 0;
+            case 1:citireFisier(l);
+                 break;
+            case 2: int aux;
+                cout<<"Travel insurance(0)/car insurance (1): ";
+                cin>>aux;
+                try{
+                    if(aux>1)
+                        throw Exception("Wrong option",aux);
+                    if (!aux) insert(l,0);
+                    else insert(l,1);
+                }
+                catch(Exception ex){
+                    cout<<ex.message;
+                    cout<<ex.data<<endl;
+                }
+                break;
+            case 3: l.displayCategory();
+            break;
+            case 4: string fName,lName;
+                cout<<"\nFirst name: ";
+                cin>>fName;
+                cout<<"\nLast Name: ";
+                cin>>lName;
+                l.deleteName(fName,lName);
+                break;
+            case 5: string name,newName;
+                cout<<"\nwanted name: ";
+                cin>>name;
+                cout<<"\nNew Name: ";
+                cin>>newName;
+                l.changeName(name,newName);
+                break;
+            case 7:string period;
+                cout<<"\nPeriod: ";
+                cin>>period;
+                l.saveFile(period);
+                break;
+            default:cout<<"\nWrong option!";
+        }
+    }
+    return 0;
  }
