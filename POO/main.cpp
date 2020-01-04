@@ -419,3 +419,7 @@ int main(){
     }
     return 0;
  }
+ //parca merge bine
+ //nu merge cum trebuie citirea din fisier
+ //imi citeste doar tipul ,asta trebuie sa faca,doar ca rescrie fisierul fix asa "1 prenume nume 0 period"
+ 
