@@ -315,7 +315,7 @@ void List::displayCategory(){
 }
 void List::deleteName(string fName, string lName){
     Insurance *x, *y; // nu am inspiratie man, schimbam dupa
-    x=y=head;
+    x =y=head;
     if(x)
     {
         while(x && x->firstName !=fName && x->lastName !=lName){
@@ -379,13 +379,13 @@ int main(){
     List l;
     l.head=NULL;
     while(1){
-        cout << "\n\n[1]Incarcare informații dintr-un fisier.\n";
+        cout << "\n\n[1]Incarcare informatii dintr-un fisier.\n";
 		cout << "[2]Adaugarea unei asigurari noi\n";
 		cout << "[3]Afisare asigurarilor pe categorie si salvarea in fisier.\n";
 		cout << "[4]Stergere dupa nume si prenume.\n";
 		cout << "[5]Modificarea numelui.\n";
         cout << "xxxxx--[6]Sortarea listei dupa nume.\n";
-		cout << "[7]Salvarea într-un fisier a asigurarilor dupa perioada citia de la tastatura\n";
+		cout << "[7]Salvarea intr-un fisier a asigurarilor dupa perioada citia de la tastatura\n";
 		cout << "[0]Iesire.\n";
 		cout << "Dati optiunea dvs: ";
 		cin >> opt;
@@ -440,3 +440,7 @@ int main(){
  //nu merge cum trebuie citirea din fisier
  //imi citeste doar tipul ,asta trebuie sa faca,doar ca rescrie fisierul fix asa "1 prenume nume 0 period"
  
+ //Nu imi incarca lista, spune ca nu a fost deschisa.
+ //nu pot adauga o asigurare ca intra in ceva bucla infinita
+ //La afisare zice ca lista e goala. 
+ // Iau codul si il rulez in Vs Studio.
