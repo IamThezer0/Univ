@@ -75,7 +75,7 @@ public:
     }
     virtual void fileWrite(){
         ofstream file;
-        file.open("F:/univer/proiect/Univ/POO/newFile.txt",ios::out|ios::app);
+        file.open("F:/univer/proiect/Univ/POO/newFile.txt");
         file<<getType()<<" "<<firstName<<" "<<lastName<<" "<<CNP<<" "<<period<<" ";
         file.close();
     }
@@ -93,11 +93,11 @@ public:
         Insurance::display();
         cout<<"The destination of travel is: "<<destination<<endl; 
     }
-    void fileWrite(){
+    virtual void fileWrite(){
         Insurance::fileWrite();
         ofstream file;
-        file.open("F:/univer/proiect/Univ/POO/newFile.txt",ios::out|ios::app);
-        file<<destination;
+        file.open("F:/univer/proiect/Univ/POO/newFile.txt");
+        file<<destination<<" ";
         file.close();
     }
     friend class List;
@@ -119,11 +119,11 @@ public:
         cout<<"The type of the car is: "<<carType <<endl;
         cout<<"The model of the car is: "<<carModel<<endl;
     }
-    void fileWrite(){
+    virtual void fileWrite(){
         Insurance::fileWrite();
         ofstream file;
-        file.open("F:/univer/proiect/Univ/POO/newFile.txt",ios::out|ios::app);
-        file<<carType<<" "<<carModel<<endl;
+        file.open("F:/univer/proiect/Univ/POO/newFile.txt");
+        file<<carType<<" "<<carModel<<" ";
         file.close();
     }
     friend class List;
@@ -288,6 +288,19 @@ void insert(List &l,int x){
         l.addNode(ins);
     }
 }
+void List::saveFile(){
+    Insurance*ins;
+    ins=head;
+    if(!ins)cout<<"\nempty list!";
+    else while(ins){
+        if(ins->getType()==0){
+        ins->fileWrite();
+        }else{
+            ins->fileWrite();
+        }
+        ins=ins->next;
+    }
+}
 void List::displayCategory(){
     Insurance*ins;
     ins=head;
@@ -298,7 +311,8 @@ void List::displayCategory(){
         while(ins){
             if(ins->type==0){
                 ins->display();
-                ins->displayFile();
+               // ins->displayFile();
+                
             }
             ins=ins->next;
         }
@@ -307,7 +321,8 @@ void List::displayCategory(){
         while(ins){
             if(ins->type==1){
                 ins->display();
-                ins->displayFile();
+              //  ins->displayFile();
+               
             }
             ins=ins->next;
         }
@@ -342,15 +357,7 @@ void List::deleteName(string fName, string lName){
     else
         cout<<" Lista este vida! "<<endl;
 }
-void List::saveFile(){
-    Insurance*ins;
-    ins=head;
-    if(!ins)cout<<"\nempty list!";
-    else while(ins){
-        ins->fileWrite();
-        ins=ins->next;
-    }
-}
+
 void List::saveFilePeriod(string period){//salvarea dupa perioada
     Insurance*ins;
     ins=head;
