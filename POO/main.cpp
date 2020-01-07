@@ -75,7 +75,7 @@ public:
     }
     virtual void fileWrite(){
         ofstream file;
-        file.open("F:/univer/proiect/Univ/POO/newFile.txt");
+        file.open("F:/univer/proiect/Univ/POO/newFile.txt",ios::out|ios::app);
         file<<getType()<<" "<<firstName<<" "<<lastName<<" "<<CNP<<" "<<period<<" ";
         file.close();
     }
@@ -96,8 +96,8 @@ public:
     void fileWrite(){
         Insurance::fileWrite();
         ofstream file;
-        file.open("F:/univer/proiect/Univ/POO/newFile.txt");
-        file<<destination<<" ";
+        file.open("F:/univer/proiect/Univ/POO/newFile.txt",ios::out|ios::app);
+        file<<destination;
         file.close();
     }
     friend class List;
@@ -122,8 +122,8 @@ public:
     void fileWrite(){
         Insurance::fileWrite();
         ofstream file;
-        file.open("F:/univer/proiect/Univ/POO/newFile.txt");
-        file<<carType<<" "<<carModel<<" "<<endl;
+        file.open("F:/univer/proiect/Univ/POO/newFile.txt",ios::out|ios::app);
+        file<<carType<<" "<<carModel<<endl;
         file.close();
     }
     friend class List;
@@ -196,7 +196,8 @@ class List{
         void displayCategory();
         void deleteName(string fName, string lName);
         void displayName(string name);
-        void saveFile(string period);
+        void saveFilePeriod(string period);
+        void saveFile();
 };
 
 void List::addNode(Insurance *add)
@@ -223,17 +224,7 @@ void List::addNode(Insurance *add)
         head = add;
 }
 
-void List::changeName(string name, string newName)
-{
-    Insurance *obj;
-    obj = head;
-    while(obj)
-    {
-        if(name == newName)
-            obj->setName(newName);
-        obj=obj->next;
-    }
-}
+
 void citireFisier(List &l){//citirea din fisier
     ifstream file("F:/univer/proiect/Univ/POO/fileDocument.txt");
     string fileLine,
@@ -244,19 +235,24 @@ void citireFisier(List &l){//citirea din fisier
             marcaAuto="Marca auto",
             modelAuto="Model auto";
     int cnp,tip;
-    travelInsurance *ti;
-    carInsurance *ci;
+    Insurance*ins;
+    
+    
     if(file.is_open()){
-        while(getline(file,fileLine)){
-            tip=stoi(fileLine,nullptr,10);
-            cout<<"\n"<<tip;
-            if(tip==0){
+        while(file>>tip>>nume>>prenume>>cnp>>perioada){
+            if (tip==1) file>>destinatie;
+            else file>>marcaAuto>>modelAuto;
+            if(tip==1){
+                travelInsurance *ti;
                 ti=new travelInsurance(nume,prenume,cnp,perioada,tip,destinatie);
-                l.addNode(ti);
+                ins=ti;
+                l.addNode(ins);
             }
             else{
+                carInsurance *ci;
                 ci=new carInsurance(nume,prenume,cnp,perioada,tip,marcaAuto,modelAuto);
-                l.addNode(ci);
+               ins=ci;
+                l.addNode(ins);
             }
         }
         file.close();
@@ -346,7 +342,16 @@ void List::deleteName(string fName, string lName){
     else
         cout<<" Lista este vida! "<<endl;
 }
-void List::saveFile(string period){//salvarea dupa perioada
+void List::saveFile(){
+    Insurance*ins;
+    ins=head;
+    if(!ins)cout<<"\nempty list!";
+    else while(ins){
+        ins->fileWrite();
+        ins=ins->next;
+    }
+}
+void List::saveFilePeriod(string period){//salvarea dupa perioada
     Insurance*ins;
     ins=head;
     if(!ins)
@@ -358,6 +363,17 @@ void List::saveFile(string period){//salvarea dupa perioada
 
     }
 }
+void List::changeName(string name, string newName)
+{
+    Insurance *obj;
+    obj = head;
+    while(obj)
+    {
+        if(obj->firstName==name)
+            obj->setName(newName);
+        obj=obj->next;
+    }
+}
 int main(){
     int opt;
     List l;
@@ -367,7 +383,7 @@ int main(){
 		cout << "[2]Adaugarea unei asigurari noi\n";
 		cout << "[3]Afisare asigurarilor pe categorie si salvarea in fisier.\n";
 		cout << "[4]Stergere dupa nume si prenume.\n";
-		cout << "[5]Modificarea numelui antrenorului.\n";
+		cout << "[5]Modificarea numelui.\n";
         cout << "xxxxx--[6]Sortarea listei dupa nume.\n";
 		cout << "[7]Salvarea într-un fisier a asigurarilor dupa perioada citia de la tastatura\n";
 		cout << "[0]Iesire.\n";
@@ -393,6 +409,7 @@ int main(){
             }
                 break;
             case 3: l.displayCategory();
+                	l.saveFile();
             break;
             case 4: {string firstName,lastName;
                         cout<<"\nFirst name: ";
@@ -412,7 +429,7 @@ int main(){
                     string period;
                     cout<<"\nPeriod: ";
                     cin>>period;
-                    l.saveFile(period);
+                    l.saveFilePeriod(period);
                 } break;
             default:cout<<"\nWrong option!";
         }
